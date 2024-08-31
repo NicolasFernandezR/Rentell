@@ -1,26 +1,72 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+import { Address } from './entities/address.entity';
+import { UserCreateException } from 'src/exceptions/user-create.exception';
+import { UpdateAddressDto } from './dto/update-adress.dto';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(Address)
+    private addressRepository: Repository<Address>
+  ) {}
+
+  // crear usuario con direccion
+  async create(createUserDto: CreateUserDto) {
+    try{
+      return await  this.userRepository.manager.transaction( async manager => {
+        const address = this.addressRepository.create(createUserDto.address);
+        await manager.save(address);
+        const user = this.userRepository.create({...createUserDto, address});
+        return await manager.save(user);
+      });
+    } catch (err){
+      throw new UserCreateException("error al crear usuario");
+    }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  // buscar por email
+  async findByEmail(email: string) {
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['address'], // Asegúrate de cargar la relación address
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  // eliminar usuario
+  async remove(email: string) {
+      return await this.userRepository.manager.transaction( async manager => {
+        const user = await manager.findOne(User, { where: { email}, relations: ['address'] });
+        if(!user) throw new NotFoundException("usuario no encontrado");
+        await manager.softRemove(user.address);
+        await manager.softRemove(user);
+        return {message: "usuario eliminado"};
+      }
+      );
+}
+  // actualizar usuario actualiza tanto datos personal como direccion
+  async updateUser(email: string, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.manager.transaction( async manager => {
+      const user = await this.findByEmail(email);
+      if(!user) throw new NotFoundException("usuario no encontrado");
+      if(Object.keys(updateUserDto.address).length > 0){
+        const address = await manager.findOne(Address, { where : { idAdress : user.address.idAdress}});
+        if(!address) throw new NotFoundException("direccion no encontrada");
+        await manager.update(Address, address.idAdress, updateUserDto.address);
+        delete updateUserDto.address;
+      }
+      if(Object.keys(updateUserDto).length > 0){
+        await manager.update(User, user.idUser, updateUserDto);
+      }
+      return {message: "usuario actualizado"};
+    });
   }
 }
+

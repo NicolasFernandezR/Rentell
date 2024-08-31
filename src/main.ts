@@ -8,9 +8,9 @@ async function bootstrap() {
   //  use pipe to validate the incoming data
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
-    forbidNonWhitelisted: true,
+    forbidNonWhitelisted: false,
     transform: true
   }));
-  await app.listen(3000);
+  await app.listen(process.env.PORT||3000);
 }
 bootstrap();

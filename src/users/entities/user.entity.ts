@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Address } from "./address.entity";
 
 @Entity()
@@ -24,4 +24,7 @@ export class User {
 
   @ManyToOne(() => Address)
     address : Address;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

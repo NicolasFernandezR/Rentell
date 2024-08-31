@@ -1,2 +1,49 @@
 ### obtener la url de la aplicación
-GET http://localhost:3000
+POST http://localhost:3000/users 
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword123",
+  "phone": "+1234567890",
+  "role": "user",
+  "address": {
+    "calle": "123 Main St",
+    "numero": "456",
+    "ciudad": "Anytown",
+    "comuna": "Anycomuna",
+    "region": "Anyregion",
+    "pais": "Anycountry",
+    "sql": "SELECT * FROM users"
+  }
+}
+
+### obtener user por email
+GET http://localhost:3000/users/john.doe@example.com
+
+### eliminar un usuario
+DELETE http://localhost:3000/users/john.doe@exampl
+
+
+### editar usuario
+PATCH  http://localhost:3000/users/edit/john.doe@example.com
+Content-Type: application/json
+
+{
+  "address": {
+    "numero": "333"
+  }
+}
+
+### editar direccion
+PATCH  http://localhost:3000/users/datos-direccion/john.doe@example.com
+Content-Type: application/json
+
+{
+    "calle": "123 Main St",
+    "numero": "456",
+    "ciudad": "Anytown",
+    "comuna": "Anycomuna",
+    "region": "Anyregione"
+}
