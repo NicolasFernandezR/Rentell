@@ -1,5 +1,6 @@
 import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Address } from "./address.entity";
+import { IsEmail, Matches } from "class-validator";
 
 @Entity()
 export class User {
@@ -10,10 +11,15 @@ export class User {
   @Column()
   name: string;
 
-  @Column()
+  @IsEmail()
   email: string;
 
   @Column()
+  @Matches(
+    /^(?=.*[A-Z]).{6,}$/, 
+    {
+    message: 'La contraseña debe contener al menos una letra mayúscula y tener más de 5 caracteres',
+  })
   password: string;
 
   @Column()

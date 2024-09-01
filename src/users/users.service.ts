@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Address } from './entities/address.entity';
 import { UserCreateException } from 'src/exceptions/user-create.exception';
-import { UpdateAddressDto } from './dto/update-adress.dto';
 
 @Injectable()
 export class UsersService {

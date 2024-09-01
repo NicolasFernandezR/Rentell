@@ -47,3 +47,36 @@ Content-Type: application/json
     "comuna": "Anycomuna",
     "region": "Anyregione"
 }
+
+
+### Crear Propiedad
+POST http://localhost:3000/properties
+Content-Type: application/json
+
+{
+  "address": "123 Main St",
+  "ciudad": "Santiago",
+  "comuna": "Las Condes",
+  "price": 250000,
+  "description": "Hermosa casa en una excelente ubicación.",
+  "bathrooms": 2,
+  "rooms": 3,
+  "area": 120,
+  "photo_url": "http://example.com/photo.jpg",
+  "sale_type": "Venta",
+  "property_type": "Casa"
+}
+
+### obtener propiedades por id
+GET http://localhost:3000/properties/17125eb6-3182-4c81-9c4b-2717dc0767c4
+
+### Eliminar Propiedad por id
+DELETE http://localhost:3000/properties/17125eb6-3182-4c81-9c4b-2717dc0767c4
+
+### Editar Propiedad por id
+PATCH http://localhost:3000/properties/17125eb6-3182-4c81-9c4b-2717dc0767c4
+Content-Type: application/json
+
+{
+  "price": 300000
+}
