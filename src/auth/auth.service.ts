@@ -6,7 +6,6 @@ import * as bcrypt  from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 
-
 @Injectable()
 export class AuthService {
 
@@ -15,7 +14,7 @@ export class AuthService {
   ) {}
 
   async register(createUserDto: CreateUserDto) {
-    const user = this.userService.findByEmail(createUserDto.email);
+    const user = await this.userService.findByEmail(createUserDto.email);
     if (user) {
       throw new BadRequestException('Usuario ya existe');
     }

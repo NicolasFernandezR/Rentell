@@ -11,15 +11,10 @@ export class User {
   @Column()
   name: string;
 
-  @IsEmail()
+  @Column()
   email: string;
 
   @Column()
-  @Matches(
-    /^(?=.*[A-Z]).{6,}$/, 
-    {
-    message: 'La contraseña debe contener al menos una letra mayúscula y tener más de 5 caracteres',
-  })
   password: string;
 
   @Column()

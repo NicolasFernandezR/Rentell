@@ -1,11 +1,11 @@
 ### obtener la url de la aplicación
-POST http://localhost:3000/users 
+POST http://localhost:3000/register 
 Content-Type: application/json
 
 {
   "name": "John Doe",
-  "email": "john.doe@example.com",
-  "password": "securepassword123",
+  "email": "john.doe@example.col",
+  "password": "Securepassword123",
   "phone": "+1234567890",
   "role": "user",
   "address": {
@@ -79,4 +79,13 @@ Content-Type: application/json
 
 {
   "price": 300000
+}
+
+###login 
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.col",
+  "password": "Securepassword12"
 }
