@@ -1,5 +1,5 @@
 import {OmitType, PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
+import { CreateUserDto } from '../../common/dtos/create-user.dto';
 import { UpdateAddressDto } from './update-adress.dto';
 import { ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
